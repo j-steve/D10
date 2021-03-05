@@ -29,12 +29,24 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Page1.pug">
+    <Content Include="landing.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="landingpage.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\landing.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\landing.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="public\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

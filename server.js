@@ -7,12 +7,11 @@ var port = process.env.PORT || 1337;
 
 var app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello Joy! Stephen wrote this :)!')
-});
+app.use(express.static('public'));
+app.use('/static', express.static('public'))
 
-app.get('/test', (req, res) => {
-    res.send(pug.compileFile('Page1.pug')());
+app.get('/', (req, res) => {
+    res.send(pug.compileFile('landingpage.pug')());
 });
 
 app.listen(port, () => {
