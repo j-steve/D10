@@ -1,8 +1,20 @@
 'use strict';
 var http = require('http');
+var express = require('express');
+var pug = require('pug');
+
 var port = process.env.PORT || 1337;
 
-http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello Joy! Stephen wrote this :) \n');
-}).listen(port);
+var app = express();
+
+app.get('/', (req, res) => {
+    res.send('Hello Joy! Stephen wrote this :)!')
+});
+
+app.get('/test', (req, res) => {
+    res.send(pug.compileFile('Page1.pug')());
+});
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+});
