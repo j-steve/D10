@@ -8,7 +8,6 @@ const MAX_TUMBLE_TIMES = 20;
 const diceInPlay = [];
 
 function main() {
-  $('#raises').hide();
   const $diceRollArea = $('#dice-roll-area');
   $('#dice-count-form').on('submit', (e) => {
     $('.dice').remove();
