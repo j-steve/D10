@@ -119,15 +119,13 @@ class RaiseSetCalculator {
     let maxErrorThreshold = 0;
     let raiseCount = 0;
     while (remainingDice.length > 0 && maxErrorThreshold < DICE_SIDES) {
-      let raiseSet;
-      do {
+      let raiseSet = RaiseSetCalculator._findOneRaiseSet(remainingDice, maxErrorThreshold);
+      while (raiseSet != null) {
+        raiseCount++;
+        raiseSet.forEach(d => d.setRaiseSet(raiseSet));
+        remainingDice = remainingDice.filter(d => !raiseSet.includes(d));
         raiseSet = RaiseSetCalculator._findOneRaiseSet(remainingDice, maxErrorThreshold);
-        if (raiseSet != null) {
-          raiseSet.forEach(d => d.setRaiseSet(raiseSet));
-          remainingDice = remainingDice.filter(d => !raiseSet.includes(d));
-          raiseCount++;
-        }
-      } while (raiseSet != null)
+      }
       maxErrorThreshold++;
     }
     remainingDice.forEach(dice => dice.isLeftover(true));
