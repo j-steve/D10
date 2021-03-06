@@ -80,7 +80,7 @@ function calculateSets() {
   let currentRaiseDice = 0;
   while (diceValues.length) {
     const adding = currentRaiseValue === 0 ? diceValues.pop() : diceValues.shift();
-    currentRaiseValue += adding; //currentRaiseValue === 0 ? diceValues.pop() : diceValues.shift();
+    currentRaiseValue += adding;
     currentRaiseDice += 1;
     console.log(diceValues.length, 'added', adding, 'to get', currentRaiseValue);
     if (currentRaiseValue >= RAISE_VALUE) {
@@ -90,7 +90,8 @@ function calculateSets() {
     }
   }
   $('#raise-count').text(raiseCount);
-  $('#leftover-dice-count').html('&ge;' + currentRaiseDice);
+  const raisePrefix = currentRaiseDice > 0 ? '&ge;' : '';
+  $('#leftover-dice-count').html(raisePrefix + currentRaiseDice);
   $('#raises').show();
 }
 
