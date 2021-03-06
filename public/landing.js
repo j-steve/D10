@@ -66,18 +66,19 @@ class Dice {
     });
   }
 
-  /** Undoes the effect of calling setRaiseSet(). */
-  clearRaiseSet() {
-    this._$dice.removeClass('highlight');
-    this._$dice.off('.raiseset');
-  }
-
   /**
    * Sets the dice's style to indicate that it is a leftover dice, not part of any raise set.
    * @param {boolean} value
    */
   isLeftover(value) {
     this._$dice.toggleClass('leftover', value);
+  }
+
+  /** Undoes the effect of calling setRaiseSet() and/or isLeftover(). */
+  clearRaiseSet() {
+    this._$dice.removeClass('leftover');
+    this._$dice.removeClass('highlight');
+    this._$dice.off('.raiseset');
   }
 
   /**
