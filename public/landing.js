@@ -89,16 +89,15 @@ class RaiseSetCalculator {
     let maxErrorThreshold = 0;
     let raiseCount = 0;
     while (remainingDice.length > 0 && maxErrorThreshold < DICE_SIDES) {
-      while (true) {
-        let raiseSet = RaiseSetCalculator._findOneRaiseSet(remainingDice, maxErrorThreshold);
-        if (raiseSet == null) {
-          break;
+      let raiseSet;
+      do {
+        raiseSet = RaiseSetCalculator._findOneRaiseSet(remainingDice, maxErrorThreshold);
+        if (raiseSet != null) {
+          raiseSet.forEach(d => d.setRaiseSet(raiseSet));
+          remainingDice = remainingDice.filter(d => !raiseSet.includes(d));
+          raiseCount++;
         }
-        console.log(`for error threshold ${maxErrorThreshold}, started with ${raiseSet[0].getValue()} and made set ${raiseSet.map(d => d.getValue())}.`);
-        raiseSet.forEach(d => d.setRaiseSet(raiseSet));
-        remainingDice = remainingDice.filter(d => !raiseSet.includes(d));
-        raiseCount++;
-      }
+      } while (raiseSet != null)
       maxErrorThreshold++;
     }
     remainingDice.forEach(dice => dice.isLeftover(true));
@@ -123,7 +122,6 @@ class RaiseSetCalculator {
             return raiseDiceSet;
           }
         }
-        console.log(`for error threshold ${maxErrorThreshold}, started with ${raiseDiceSet[0].getValue()} and ended with sum ${currentSum}.`);
       }
     }
     return null;
