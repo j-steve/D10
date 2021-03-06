@@ -86,7 +86,9 @@ function calculateSets() {
     console.log(diceValues.length, 'added', adding, 'to get', currentRaiseValue);
     if (currentRaiseValue >= RAISE_VALUE) {
       raiseCount += 1
-      if (currentRaiseDice > 2) { isLeftoverResultUncertain = true;}
+      if (currentRaiseValue > RAISE_VALUE && currentRaiseDice > 2) {
+        isLeftoverResultUncertain = true;
+      }
       currentRaiseValue = 0;
       currentRaiseDice = 0;
     }
