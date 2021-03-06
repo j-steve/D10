@@ -5,86 +5,115 @@ const TUMBLE_OPACITY = 0.5;
 const MIN_TUMBLE_TIMES = 15;
 const MAX_TUMBLE_TIMES = 20;
 
+/** @type {Dice[]} */
 const diceInPlay = [];
 
 function main() {
   const $diceRollArea = $('#dice-roll-area');
   $('#dice-count-form').on('submit', (e) => {
-    $('.dice').remove();
+    $('.dice').remove(); // Remove any pre-existing dice on a new roll submission.
     diceInPlay.length = 0;
     for (let i = 0; i < $('#dice-count').val(); i++) {
-      const dice = new Dice().appendTo($diceRollArea);
-      dice.roll();
-      diceInPlay.push(dice);
+      diceInPlay.push(new Dice().appendTo($diceRollArea));
     }
-    RaiseSetCalculator.setCaluclateSetsTimeout();
-    return false;
+    Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(RaiseSetCalculator.calculateSets);
+    return false; // To prevent form submission and page reload.
   });
 }
 
 class Dice {
+
   constructor($diceRollArea) {
+    /** @type {jQuery} */
     this._$dice = $('<div>').addClass('dice');
     this._$diceValue = $('<span>').appendTo(this._$dice);
     this._value = 0;
     this._tumblesRemaining = 0;
     this._tumbleCallback = 0;
     this._$dice.on('click', () => {
-      RaiseSetCalculator.setCaluclateSetsTimeout();
-      this.roll();
+      diceInPlay.forEach(d => d.clearRaiseSet());
+      this.roll().then(RaiseSetCalculator.calculateSets);
     });
   }
 
+  /**
+   * Returns the value of this dice.
+   * @returns {number} the dice value
+   */
   getValue() {
     if (this._tumbleCallback > 0) { throw Error('Still tumbling.'); }
     return parseInt(this._value);
   }
 
+  /**
+   * Appends the dice element to the given dice roll area.
+   * @param {jQuery} $diceRollArea the element to which the dice should be appended
+   * @returns {Dice} this entity
+   */
   appendTo($diceRollArea) {
     this._$dice.appendTo($diceRollArea);
     return this;
   }
 
+  /**
+   * Sets this dice's style to associate it with the (potentially) additional dice in its raise set.
+   * @param {Dice[]} raiseSet
+   */
   setRaiseSet(raiseSet) {
     this._$dice.on({
-      'mouseenter': () => raiseSet.forEach(d => d._$dice.addClass('highlight')),
-      'mouseleave': () => raiseSet.forEach(d => d._$dice.removeClass('highlight'))
+      'mouseenter.raiseset': () => raiseSet.forEach(d => d._$dice.addClass('highlight')),
+      'mouseleave.raiseset': () => raiseSet.forEach(d => d._$dice.removeClass('highlight'))
     });
   }
 
+  /** Undoes the effect of calling setRaiseSet(). */
+  clearRaiseSet() {
+    this._$dice.removeClass('highlight');
+    this._$dice.off('.raiseset');
+  }
+
+  /**
+   * Sets the dice's style to indicate that it is a leftover dice, not part of any raise set.
+   * @param {boolean} value
+   */
   isLeftover(value) {
     this._$dice.toggleClass('leftover', value);
   }
 
+  /**
+   * Rolls the dice to a random value, which takes some time to complete as the dice will tumble first.
+   * @returns {Promise<Dice>} promise that will complete when the dice value is finalized.
+   */
   roll() {
     this.isLeftover(false);
     this._value = randomBetween(1, DICE_SIDES);
     this._$dice.css('opacity', TUMBLE_OPACITY);
     this._tumblesRemaining = randomBetween(MIN_TUMBLE_TIMES, MAX_TUMBLE_TIMES); // How many times this dice should tumble before stopping.
-    this._tumble();
+    return this._tumble();
   }
 
+  /** @returns {Promise<Dice>} */
   _tumble() {
-    const nextHighestNumber = this._value + randomBetween(0, DICE_SIDES - 2);
-    this._value = nextHighestNumber % DICE_SIDES + 1;
-    this._$diceValue.text(this._value);
-    this._$dice.css('background-color', `rgb(${255 + 50 - this._value * 5}, ${228 + 50 - this._value * 5}, ${202 + 50 - this._value * 5})`);
-    this._tumblesRemaining -= 1;
-    if (this._tumblesRemaining > 0) {
-      this._tumbleCallback = setTimeout(this._tumble.bind(this), TUMBLE_INTERVAL_MS);
-    } else {
-      this._tumbleCallback = 0;
-      this._$dice.css('opacity', 1);
-    }
+    return new Promise(resolve => {
+      const nextHighestNumber = this._value + randomBetween(0, DICE_SIDES - 2);
+      this._value = nextHighestNumber % DICE_SIDES + 1;
+      this._$diceValue.text(this._value);
+      this._$dice.css('background-color', `rgb(${255 + 50 - this._value * 5}, ${228 + 50 - this._value * 5}, ${202 + 50 - this._value * 5})`);
+      this._tumblesRemaining -= 1;
+      if (this._tumblesRemaining > 0) {
+        this._tumbleCallback = setTimeout(() => resolve(this._tumble()), TUMBLE_INTERVAL_MS);
+      } else {
+        this._tumbleCallback = 0;
+        this._$dice.css('opacity', 1);
+        resolve(this);
+      }
+    });
   }
 }
 
 class RaiseSetCalculator {
-  static setCaluclateSetsTimeout() {
-    $('#raises').hide();
-    setTimeout(RaiseSetCalculator._calculateSets, MAX_TUMBLE_TIMES * TUMBLE_INTERVAL_MS + 100);
-  }
-  static _calculateSets() {
+
+  static calculateSets() {
     let remainingDice = [...diceInPlay]; // Make a shallow copy of the list.
     let maxErrorThreshold = 0;
     let raiseCount = 0;
@@ -128,6 +157,12 @@ class RaiseSetCalculator {
   }
 }
 
+/**
+ * Returns a random number between min and max, inclusive of both values.
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max + 1 - min) + min)
 }
