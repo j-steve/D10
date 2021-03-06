@@ -1,2 +1,53 @@
 body {
 }
+
+#content {
+  margin: 1rem;
+  color: rgb(60, 60, 60);
+  padding: 1rem;
+}
+
+
+#dice-count, button {
+  font-size: 1.5rem;
+  border-radius: 15px;
+  padding: .5rem;
+}
+
+button {
+  width:5rem;
+}
+
+#dice-count {
+  width: 6rem;
+  border: 1px solid rgb(60, 60, 60);
+  border-width: 1px;
+  margin-bottom: .25rem;
+  margin-right: .25rem;
+}
+
+#dice-roll-area {
+  margin-top: .25rem;
+  border-radius: 15px;
+  border: 1px solid rgb(60, 60, 60);
+  height: 20rem;
+  width: 20rem;
+  padding: .25rem;
+}
+
+.dice {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(255, 228, 202);
+  min-height: 3rem;
+  width: 3rem;
+  border: 2px solid rgb(60, 60, 60);
+  border-radius: 15px;
+  margin: .25rem;
+  cursor: pointer;
+}
+  .dice span {
+    font-size: 2rem;
+  }

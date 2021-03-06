@@ -1,8 +1,15 @@
 doctype html
 html
-    head
-        title=D10
-        meta(name="viewport", content="width=device-width, initial-scale=1")
-        link(rel="stylesheet", href="/static/landing.css")
-    body
-        script(src="/static/landing.js")
+  head
+    title=D10
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/static/landing.css")
+  body
+    div#content
+      form#dice-count-form
+        input#dice-count(type="number", placeholder="# of die", min=1, max=100, required, autofocus)
+        button(type=submit)
+          |Roll!
+      div#dice-roll-area
+    script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js", integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=", crossorigin="anonymous")
+    script(src="/static/landing.js")
