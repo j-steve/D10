@@ -17,7 +17,7 @@ function main() {
       dice.roll();
       diceInPlay.push(dice);
     }
-    setCaluclateSetsTimeout();
+    RaiseSetCalculator.setCaluclateSetsTimeout();
     return false;
   });
 }
@@ -30,7 +30,7 @@ class Dice {
     this._tumblesRemaining = 0;
     this._tumbleCallback = 0;
     this._$dice.on('click', () => {
-      setCaluclateSetsTimeout();
+      RaiseSetCalculator.setCaluclateSetsTimeout();
       this.roll();
     });
   }
@@ -45,7 +45,19 @@ class Dice {
     return this;
   }
 
+  setRaiseSet(raiseSet) {
+    this._$dice.on({
+      'mouseenter': () => raiseSet.forEach(d => d._$dice.addClass('highlight')),
+      'mouseleave': () => raiseSet.forEach(d => d._$dice.removeClass('highlight'))
+    });
+  }
+
+  isLeftover(value) {
+    this._$dice.toggleClass('leftover', value);
+  }
+
   roll() {
+    this.isLeftover(false);
     this._value = randomBetween(1, DICE_SIDES);
     this._$dice.css('opacity', TUMBLE_OPACITY);
     this._tumblesRemaining = randomBetween(MIN_TUMBLE_TIMES, MAX_TUMBLE_TIMES); // How many times this dice should tumble before stopping.
@@ -67,36 +79,55 @@ class Dice {
   }
 }
 
-function setCaluclateSetsTimeout() {
-  $('#raises').hide();
-  setTimeout(calculateSets, MAX_TUMBLE_TIMES * TUMBLE_INTERVAL_MS + 100);
-}
-
-function calculateSets() {
-  const diceValues = diceInPlay.map(d => d.getValue());
-  diceValues.sort((a, b) => a - b);
-  let raiseCount = 0;
-  let currentRaiseValue = 0;
-  let currentRaiseDice = 0;
-  let isLeftoverResultUncertain = false;
-  while (diceValues.length) {
-    const adding = currentRaiseValue === 0 ? diceValues.pop() : diceValues.shift();
-    currentRaiseValue += adding;
-    currentRaiseDice += 1;
-    console.log(diceValues.length, 'added', adding, 'to get', currentRaiseValue);
-    if (currentRaiseValue >= RAISE_VALUE) {
-      raiseCount += 1
-      if (currentRaiseValue > RAISE_VALUE && currentRaiseDice > 2) {
-        isLeftoverResultUncertain = true;
-      }
-      currentRaiseValue = 0;
-      currentRaiseDice = 0;
-    }
+class RaiseSetCalculator {
+  static setCaluclateSetsTimeout() {
+    $('#raises').hide();
+    setTimeout(RaiseSetCalculator._calculateSets, MAX_TUMBLE_TIMES * TUMBLE_INTERVAL_MS + 100);
   }
-  $('#raise-count').text(raiseCount);
-  const raisePrefix = isLeftoverResultUncertain ? '&ge;' : '';
-  $('#leftover-dice-count').html(raisePrefix + currentRaiseDice);
-  $('#raises').show();
+  static _calculateSets() {
+    let remainingDice = [...diceInPlay]; // Make a shallow copy of the list.
+    let maxErrorThreshold = 0;
+    let raiseCount = 0;
+    while (remainingDice.length > 0 && maxErrorThreshold < DICE_SIDES) {
+      while (true) {
+        let raiseSet = RaiseSetCalculator._findOneRaiseSet(remainingDice, maxErrorThreshold);
+        if (raiseSet == null) {
+          break;
+        }
+        console.log(`for error threshold ${maxErrorThreshold}, started with ${raiseSet[0].getValue()} and made set ${raiseSet.map(d => d.getValue())}.`);
+        raiseSet.forEach(d => d.setRaiseSet(raiseSet));
+        remainingDice = remainingDice.filter(d => !raiseSet.includes(d));
+        raiseCount++;
+      }
+      maxErrorThreshold++;
+    }
+    remainingDice.forEach(dice => dice.isLeftover(true));
+    $('#raise-count').text(raiseCount);
+    $('#leftover-dice-count').html(remainingDice.length);
+    $('#raises').show();
+  }
+
+  static _findOneRaiseSet(remainingDice, maxErrorThreshold) {
+    for (let i = 0; i < remainingDice.length; i++) {
+      const raiseDiceSet = [remainingDice[i]];
+      let currentSum = remainingDice[i].getValue();
+      if (currentSum >= RAISE_VALUE) {
+        return raiseDiceSet;
+      }
+      for (let j = i + 1; j < remainingDice.length; j++) {
+        const prospectiveDice = remainingDice[j];
+        if (Math.abs(RAISE_VALUE - (currentSum + prospectiveDice.getValue())) <= maxErrorThreshold) {
+          raiseDiceSet.push(prospectiveDice);
+          currentSum += prospectiveDice.getValue();
+          if (currentSum >= RAISE_VALUE) {
+            return raiseDiceSet;
+          }
+        }
+        console.log(`for error threshold ${maxErrorThreshold}, started with ${raiseDiceSet[0].getValue()} and ended with sum ${currentSum}.`);
+      }
+    }
+    return null;
+  }
 }
 
 function randomBetween(min, max) {

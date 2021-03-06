@@ -52,6 +52,15 @@ button {
   margin: .25rem;
   cursor: pointer;
 }
+
+  .dice.highlight {
+    border-color: dodgerblue;
+  }
+
+  .dice.leftover {
+    border-color: red;
+  }
+
   .dice span {
     font-size: 2rem;
   }
