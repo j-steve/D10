@@ -78,6 +78,7 @@ function calculateSets() {
   let raiseCount = 0;
   let currentRaiseValue = 0;
   let currentRaiseDice = 0;
+  let isLeftoverResultUncertain = false;
   while (diceValues.length) {
     const adding = currentRaiseValue === 0 ? diceValues.pop() : diceValues.shift();
     currentRaiseValue += adding;
@@ -85,12 +86,13 @@ function calculateSets() {
     console.log(diceValues.length, 'added', adding, 'to get', currentRaiseValue);
     if (currentRaiseValue >= RAISE_VALUE) {
       raiseCount += 1
+      if (currentRaiseDice > 2) { isLeftoverResultUncertain = true;}
       currentRaiseValue = 0;
       currentRaiseDice = 0;
     }
   }
   $('#raise-count').text(raiseCount);
-  const raisePrefix = currentRaiseDice > 0 ? '&ge;' : '';
+  const raisePrefix = isLeftoverResultUncertain ? '&ge;' : '';
   $('#leftover-dice-count').html(raisePrefix + currentRaiseDice);
   $('#raises').show();
 }
