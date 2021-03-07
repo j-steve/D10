@@ -51,11 +51,6 @@
   <ItemGroup>
     <Folder Include="public\" />
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="public\TypeScript1.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
     <VisualStudio>
