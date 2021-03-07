@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "D10",
   "main": "server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "build"
+  },
   "author": {
     "name": ""
   },
@@ -10,6 +14,11 @@
     "express": "^4.17.1",
     "path": "^0.12.7",
     "pug": "^3.0.2",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.5"
   }
 }
