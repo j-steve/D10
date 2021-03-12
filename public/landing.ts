@@ -19,19 +19,9 @@ function main() {
     return false; // To prevent form submission and page reload.
   });
 
-  setInterval(() => {
-    $.ajax({ type: 'GET', url: '/api/log' }).then((log) => {
-      const $log = $('#log').empty();
-      log.forEach(roll => {
-        const $msg = $('<div>').addClass('log').appendTo($log);
-        $('<span>').addClass('timestamp log-element').text(new Date(+roll.time).toLocaleTimeString()).appendTo($msg);
-        $('<span>').addClass('player log-element').text(roll.player).appendTo($msg);
-        $('<span>').addClass('message log-element').text(roll.message).appendTo($msg);
-      });
-      
-    });
-  }, 5000);
+  setInterval(refreshLogMessages, 5000);
 }
+
 
 class Dice {
 
@@ -143,7 +133,8 @@ class RaiseSetCalculator {
     $('#raises').show();
 
     const logMessage = `raises: ${raiseCount} | leftover die: ${remainingDice.length}`;
-    $.post('/api/log', {player: $('#player-name').val(), message: logMessage, time: Date.now()});
+    $.post('/api/log', { player: $('#player-name').val(), message: logMessage, time: Date.now() });
+    refreshLogMessages();
   }
 
   private static findOneRaiseSet(remainingDice: Dice[], maxErrorThreshold: number) {
@@ -166,6 +157,19 @@ class RaiseSetCalculator {
     }
     return null;
   }
+}
+
+function refreshLogMessages() {
+  $.ajax({ type: 'GET', url: '/api/log' }).then((log) => {
+    const $log = $('#log').empty();
+    log.forEach(roll => {
+      const $msg = $('<div>').addClass('log').appendTo($log);
+      $('<span>').addClass('timestamp log-element').text(new Date(+roll.time).toLocaleTimeString()).appendTo($msg);
+      $('<span>').addClass('player log-element').text(roll.player).appendTo($msg);
+      $('<span>').addClass('message log-element').text(roll.message).appendTo($msg);
+    });
+
+  });
 }
 
 /**
