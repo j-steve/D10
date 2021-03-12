@@ -32,7 +32,13 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="charsheet.pug">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="landingpage.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\charsheet.css">
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\landing.css">
@@ -50,6 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="public\charsheet.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

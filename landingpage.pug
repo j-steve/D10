@@ -7,7 +7,8 @@ html
   body
     div#content
       form#dice-count-form
-        input#dice-count(type="number", placeholder="# of die", min=1, max=100, required, autofocus)
+        input#player-name(placeholder="Player Name", required, autofocus)
+        input#dice-count(type="number", placeholder="# of die", min=1, max=100, required)
         button(type=submit)
           |Roll!
       div#dice-roll-area
@@ -20,5 +21,7 @@ html
           span.label
             |Leftover Dice:
           span#leftover-dice-count.value
-    script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js", integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=", crossorigin="anonymous")
+    div#content
+      div#log
+    script(src="https://code.jquery.com/jquery-3.6.0.js", crossorigin="anonymous")
     script(src="/static/bin/landing.js")

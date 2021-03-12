@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title=D10
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet", href="/static/charsheet.css")
+  body
+  header.mdc-top-app-bar.mdc-top-app-bar--short
+    div.mdc-top-app-bar__row
+      section.mdc-top-app-bar__section.mdc-top-app-bar__section--align-start
+        button.material-icons.mdc-top-app-bar__navigation-icon.mdc-icon-button menu
+        span.mdc-top-app-bar__title D10
+  main.mdc-top-app-bar--short-fixed-adjust
+    div#content
+      form#charsheet
+        input
+        button.mdc-button.foo-button
+          div.mdc-button__ripple
+          span.mdc-button__label Button
+</button>
+    script
+      | mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
+    script(src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js")
+    script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js", integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=", crossorigin="anonymous")
+    script(src="/static/bin/charsheet.js")

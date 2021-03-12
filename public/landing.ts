@@ -18,6 +18,19 @@ function main() {
     Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(RaiseSetCalculator.calculateSets);
     return false; // To prevent form submission and page reload.
   });
+
+  setInterval(() => {
+    $.ajax({ type: 'GET', url: '/api/log' }).then((log) => {
+      const $log = $('#log').empty();
+      log.forEach(roll => {
+        const $msg = $('<div>').addClass('log').appendTo($log);
+        $('<span>').addClass('timestamp log-element').text(new Date(+roll.time).toLocaleTimeString()).appendTo($msg);
+        $('<span>').addClass('player log-element').text(roll.player).appendTo($msg);
+        $('<span>').addClass('message log-element').text(roll.message).appendTo($msg);
+      });
+      
+    });
+  }, 5000);
 }
 
 class Dice {
@@ -128,6 +141,9 @@ class RaiseSetCalculator {
     $('#raise-count').text(raiseCount);
     $('#leftover-dice-count').text(remainingDice.length.toString());
     $('#raises').show();
+
+    const logMessage = `raises: ${raiseCount} | leftover die: ${remainingDice.length}`;
+    $.post('/api/log', {player: $('#player-name').val(), message: logMessage, time: Date.now()});
   }
 
   private static findOneRaiseSet(remainingDice: Dice[], maxErrorThreshold: number) {

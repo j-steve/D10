@@ -9,7 +9,7 @@ body {
 }
 
 
-#dice-count, button, #raises {
+#dice-count, button, #raises, #player-name {
   font-size: 1.5rem;
   border-radius: 15px;
   padding: .5rem;
@@ -20,7 +20,12 @@ button {
   width: 5rem;
 }
 
-#dice-count {
+#player-name {
+  display: block;
+  width: 12rem;
+  margin-bottom: .25rem;
+}
+#dice-counte {
   width: 6rem;
   border: 1px solid rgb(60, 60, 60);
   border-width: 1px;
@@ -75,4 +80,11 @@ button {
   font-family: monospace;
   font-weight: bold;
   font-size: 2rem;
+}
+
+.log-element {
+  margin-right: 1rem;
+}
+.player-name {
+  font-weight: bold;
 }
