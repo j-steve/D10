@@ -19,6 +19,7 @@ function main() {
     return false; // To prevent form submission and page reload.
   });
 
+  refreshLogMessages();
   setInterval(refreshLogMessages, 5000);
 }
 
