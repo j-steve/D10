@@ -134,7 +134,7 @@ class RaiseSetCalculator {
     $('#raises').show();
 
     const logMessage = `raises: ${raiseCount} | leftover die: ${remainingDice.length}`;
-    $.post('/api/log', { player: $('#player-name').val(), message: logMessage, time: Date.now() });
+    $.post('/api/log', { player: $('#player-name input').val(), message: logMessage, time: Date.now() });
     refreshLogMessages();
   }
 

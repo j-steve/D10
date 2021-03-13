@@ -1,0 +1,30 @@
+extends layout.pug
+
+block style
+  link(rel="stylesheet", href="/static/landing.css")
+
+block scripts
+  script(src="/static/bin/landing.js")
+
+block content
+  div
+    form#dice-count-form
+      div#player-name
+        input(type="hidden", value=charName)
+        span.key-text=charName
+        a(href="/login") (edit)
+      input#dice-count(type="number", placeholder="# of die", min=1, max=100, required, autofocus)
+      button(type=submit)
+        |Roll!
+    div#dice-roll-area
+    div#raises.key-text(style="display: none")
+      div#raise-count-container
+        span.label
+          |Raises:
+        span#raise-count.value
+      div#leftover-dice-container
+        span.label
+          |Leftover Dice:
+        span#leftover-dice-count.value
+  div
+    div#log

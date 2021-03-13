@@ -32,10 +32,16 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="charsheet.pug">
+    <Content Include="public\views\charsheet.pug">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="landingpage.pug">
+    <Content Include="public\views\landingpage.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\views\layout.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\views\login.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\charsheet.css">
@@ -47,6 +53,9 @@
     <Content Include="public\landing.ts">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\main.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -55,6 +64,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="public\views\" />
     <Folder Include="public\" />
   </ItemGroup>
   <ItemGroup>
