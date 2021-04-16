@@ -39,7 +39,7 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  res.cookie('charName', req.body.charName);
+  res.cookie('charName', req.body.charName, {maxAge: 90 * 60 * 60 * 1000 * 24});
   res.redirect('/')
 });
 
