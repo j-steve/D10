@@ -32,6 +32,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="constants.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\views\charsheet.pug">
       <SubType>Code</SubType>
     </Content>
@@ -54,6 +57,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\main.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\views\session-roller.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\views\session-start.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
