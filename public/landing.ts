@@ -15,7 +15,7 @@ function main() {
     for (let i = 0; i < $('#dice-count').val(); i++) {
       diceInPlay.push(new Dice().appendTo($diceRollArea));
     }
-    Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(RaiseSetCalculator.calculateSets);
+    Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(() => RaiseSetCalculator.calculateSets(false));
     return false; // To prevent form submission and page reload.
   });
 
@@ -38,7 +38,7 @@ class Dice {
     this.tumblesRemaining = 0;
     this.$dice.on('click', () => {
       diceInPlay.forEach(d => d.clearRaiseSet());
-      this.roll().then(RaiseSetCalculator.calculateSets);
+      this.roll().then(() => RaiseSetCalculator.calculateSets(true));
     });
   }
 
@@ -114,7 +114,7 @@ class Dice {
 
 class RaiseSetCalculator {
 
-  static calculateSets() {
+  static calculateSets(reroll: boolean) {
     let remainingDice = [...diceInPlay]; // Make a shallow copy of the list.
     let maxErrorThreshold = 0;
     let raiseCount = 0;
@@ -133,7 +133,7 @@ class RaiseSetCalculator {
     $('#leftover-dice-count').text(remainingDice.length.toString());
     $('#raises').show();
 
-    const logMessage = `raises: ${raiseCount} | leftover die: ${remainingDice.length}`;
+    const logMessage = `rolled ${diceInPlay.length} die ${reroll ? '[rerolled 1]' : ''} | raises: ${ raiseCount } | leftover die: ${ remainingDice.length }`;
     $.post('/api/log', { player: $('#player-name input').val(), message: logMessage, time: Date.now() });
     refreshLogMessages();
   }
