@@ -8,20 +8,36 @@ body {
   padding: 1rem;
 }
 
-input, select, button, .key-text {
+.key-text {
   font-size: 1.5rem;
-  border-radius: 15px;
   padding: .5rem;
 }
 
+input, select, button {
+  font-size: 1.5rem;
+  padding: .5rem;
+  border: 1px solid rgb(60, 60, 60);
+  border-radius: 15px;
+}
+
+  input:focus, select:focus, button:focus {
+    border-color: rgb(255, 191, 0);
+    border-style: solid;
+    outline: none;
+  }
+
 button {
   background-color: rgb(224, 224, 253);
-  margin-left: 0.5rem;
+  border-width: 2px;
+  cursor: pointer;
 }
+  button:not(:first-child) {
+    margin-left: 1rem;
+  }
 
 .small {
   width: 5rem;
 }
 .medium {
-  width: 15rem;
+  width: 10rem;
 }

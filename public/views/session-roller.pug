@@ -13,20 +13,20 @@ block content
         input(type="hidden", value=charName)
         span.key-text=charName
         a(href="/login") (edit)
-      div
-        select#trait.medium(required, autofocus)
+      div.roller-input
+        select#trait.roller-select(required, autofocus)
           option(value="", style="color:silver")|Select trait...
           each trait in constants.TRAITS
             option(title=trait.description)=trait.name
         input#dice-count.small(type="number", placeholder="#", min=1, max=100, required)
-      div
-        select.medium(required)
+      div.roller-input
+        select(required)
           option(value="", style="color:silver")|Select skill...
           each skill in constants.SKILLS
             option(title=skill.description)=skill.name
         input#dice-count2.small(type="number", placeholder="#", min=1, max=100, required)
-      button(type=submit)
-        |Roll!
+      div
+        button(type=submit)="Roll!"
     div#dice-roll-area
     div#raises.key-text(style="display: none")
       div#raise-count-container

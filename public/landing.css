@@ -3,7 +3,7 @@
   display: block;
   margin-bottom: .25rem;
 }
-
+/*
 #dice-count {
   width: 6rem;
   border: 1px solid rgb(60, 60, 60);
@@ -11,6 +11,7 @@
   margin-bottom: .25rem;
   margin-right: .25rem;
 }
+  */
 
 #dice-roll-area {
   display: inline-table;
@@ -66,4 +67,18 @@
 }
 .player-name {
   font-weight: bold;
+}
+
+.roller-input {
+  margin-bottom: 0.5rem;
+}
+
+  .roller-input select {
+    width: 12rem;
+    margin-right: 0.5rem;
+  }
+
+  .roller-input input {
+    width: 3rem;
+    text-align: center;
 }
