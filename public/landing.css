@@ -3,20 +3,11 @@
   display: block;
   margin-bottom: .25rem;
 }
-/*
-#dice-count {
-  width: 6rem;
-  border: 1px solid rgb(60, 60, 60);
-  border-width: 1px;
-  margin-bottom: .25rem;
-  margin-right: .25rem;
-}
-  */
 
 #dice-roll-area {
   display: inline-table;
   background-color: white;
-  margin-top: .25rem;
+  margin-top: 1rem;
   border-radius: 15px;
   border: 1px solid rgb(60, 60, 60);
   height: 10rem;
