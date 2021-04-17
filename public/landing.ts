@@ -23,7 +23,10 @@ function main() {
     return false; // To prevent form submission and page reload.
   });
   sessionUser = new SessionUser($('#sessionId').val() as string, $('#userId').val() as string, $('#charName').val() as string);
-  sendLogUpdate();
+  $.post('/api/upsert-session-user', sessionUser).then(processApiResponse).then((charRows: CharRow[]) => {
+    const charRow = charRows.find(charRow => charRow.sessionUser.userId === sessionUser.userId);
+    diceRoll = charRow.roll;
+  });
   setInterval(refreshLogMessages, 2500);
 }
 

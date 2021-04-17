@@ -93,17 +93,17 @@ app.post('/api/log', (req, res) => {
   res.send(log[sessionId]);
 });
 
-//app.post('/api/upsertSessionUser', (req, res) => {
-//  const sessionUser = req.body;
-//  if (!log[sessionUser.sessionId]) {
-//    log[sessionUser.sessionId] = {};
-//  }
-//  if (!log[sessionUser.sessionId][sessionUser.userId]) {
-//    log[sessionUser.sessionId][sessionUser.userId] = {};
-//  }
-//  log[sessionUser.sessionId][sessionUser.userId].sessionUser = sessionUser;
-//  res.send(log[sessionUser.sessionId]);
-//});
+app.post('/api/upsert-session-user', (req, res) => {
+  const sessionUser = req.body;
+  if (!log[sessionUser.sessionId]) {
+    log[sessionUser.sessionId] = {};
+  }
+  if (!log[sessionUser.sessionId][sessionUser.userId]) {
+    log[sessionUser.sessionId][sessionUser.userId] = {};
+  }
+  log[sessionUser.sessionId][sessionUser.userId].sessionUser = sessionUser;
+  res.send(log[sessionUser.sessionId]);
+});
 
 app.get('/api/log/:sessionId', (req, res) => {
   res.send(log[req.params.sessionId]);
