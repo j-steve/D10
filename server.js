@@ -99,9 +99,8 @@ app.post('/api/upsert-session-user', (req, res) => {
     log[sessionUser.sessionId] = {};
   }
   if (!log[sessionUser.sessionId][sessionUser.userId]) {
-    log[sessionUser.sessionId][sessionUser.userId] = {};
+    log[sessionUser.sessionId][sessionUser.userId] = { sessionUser };
   }
-  log[sessionUser.sessionId][sessionUser.userId].sessionUser = sessionUser;
   res.send(log[sessionUser.sessionId]);
 });
 

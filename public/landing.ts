@@ -8,6 +8,8 @@ const MAXTUMBLETIMES = 20;
 const diceInPlay: Dice[] = [];
 let sessionUser: SessionUser;
 let diceRoll: DiceRoll;
+const $charRowsTable = $('#char-rows');
+let pauseUpdate = false;
 
 function main() {
   const $diceRollArea = $('#dice-roll-area');
@@ -25,9 +27,20 @@ function main() {
   sessionUser = new SessionUser($('#sessionId').val() as string, $('#userId').val() as string, $('#charName').val() as string);
   $.post('/api/upsert-session-user', sessionUser).then(processApiResponse).then((charRows: CharRow[]) => {
     const charRow = charRows.find(charRow => charRow.sessionUser.userId === sessionUser.userId);
+    console.debug('loaded session user:', sessionUser);
+    sessionUser = charRow.sessionUser;
     diceRoll = charRow.roll;
   });
   setInterval(refreshLogMessages, 2500);
+
+  $charRowsTable.on('focus', 'input', () => { pauseUpdate = true; })
+  $charRowsTable.on('blur', 'input', () => {
+    diceRoll.raises = parseInt($charRowsTable.find('.raises input').val() as string);
+    diceRoll.leftoverDice = parseInt($charRowsTable.find('.hero-points input').val() as string) - sessionUser.heroPoints;
+    sessionUser.wounds = parseInt($charRowsTable.find('.wounds input').val() as string);
+    console.log('Setting', diceRoll.raises, diceRoll.leftoverDice, sessionUser.wounds);
+    sendLogUpdate().then(() => { pauseUpdate = false; });
+  })
 }
 
 
@@ -169,6 +182,8 @@ class RaiseSetCalculator {
 }
 
 class SessionUser {
+  public heroPoints = 1;
+  public wounds = 0;
   constructor(public sessionId: string, public userId: string, public charName: string) {
     console.log(sessionId, userId, charName);
   }
@@ -186,26 +201,37 @@ class CharRow {
 }
 
 function sendLogUpdate() {
-  $.post('/api/log', new CharRow(sessionUser, diceRoll)).then(processApiResponse);
+  return $.post('/api/log', new CharRow(sessionUser, diceRoll)).then(processApiResponse);
 }
 
 function refreshLogMessages() {
+  if (pauseUpdate) { return new Promise(() => {}); }
   return $.ajax({ type: 'GET', url: '/api/log/' + sessionUser.sessionId }).then(processApiResponse);
 }
 
 function processApiResponse(log: {}): CharRow[] {
-  const $charRowsTable = $('#char-rows');
   $charRowsTable.find('.char-row').remove() // Delete existing rows to repopualte the table.
   const charRows: CharRow[] = Object.values(log);
-  charRows.sort((a, b) => a.roll && b.roll && compareNumbers(a.roll.raises, b.roll.raises) || a.sessionUser.charName.localeCompare(b.sessionUser.charName));
+  charRows.sort((a, b) => a.roll && b.roll && -compareNumbers(a.roll.raises, b.roll.raises) || a.sessionUser.charName.localeCompare(b.sessionUser.charName));
   charRows.forEach((charRow: CharRow) => {
     const $row = $('<tr>').addClass('char-row').appendTo($charRowsTable);
     $('<td>').text(charRow.sessionUser.charName).appendTo($row);
     if (charRow.roll) {
       const diceBreakdown = `rolled ${charRow.roll.diceCount}, rerolled ${charRow.roll.rerolls}, had ${charRow.roll.leftoverDice} unused dice`;
       $('<td>').text(charRow.roll.trait + ' + ' + charRow.roll.skill).prop('title', diceBreakdown).appendTo($row);
-      $('<td>').addClass('numeric').text(charRow.roll.raises).appendTo($row);
-      $('<td>').addClass('numeric').text(charRow.roll.leftoverDice).appendTo($row);
+      const $raises = $('<td>').addClass('numeric').addClass('raises').appendTo($row);
+      const $heroPoints = $('<td>').addClass('numeric').addClass('hero-points').appendTo($row);
+      const $wounds = $('<td>').addClass('numeric').addClass('wounds').appendTo($row);
+      const heroPoints = parseInt('' + charRow.sessionUser.heroPoints) + parseInt('' + charRow.roll.leftoverDice);
+      if (charRow.sessionUser.userId === sessionUser.userId) {
+        $('<input type=number>').val(charRow.roll.raises).appendTo($raises);
+        $('<input type=number>').val(heroPoints).appendTo($heroPoints);
+        $('<input type=number>').val(charRow.sessionUser.wounds).appendTo($wounds);
+      } else { 
+        $raises.text(charRow.roll.raises);
+        $heroPoints.text(heroPoints);
+        $wounds.text(charRow.sessionUser.wounds);
+      }
     }
   })
   return charRows;
