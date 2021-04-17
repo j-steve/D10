@@ -31,3 +31,7 @@ exports.SKILLS = [
   new NamedItem('Ride', "Use Ride when you engage in a high-speed carriage chase. Use Ride when you ride a horse through the forest at a gallop."),
   new NamedItem('Sailing', "Use Sailing whenever you navigate your way through a ship's rigging. Use Sailing when you attempt to steer a ship during a pitched battle at sea, or through a dangerously narrow channel."),
 ];
+
+const MILLIS_PER_DAY = 60 * 60 * 1000 * 24;
+const COOKIE_DURATION_DAYS = 90;
+exports.MAX_COOKIE_AGE = COOKIE_DURATION_DAYS * MILLIS_PER_DAY;

@@ -8,7 +8,7 @@ var constants = require('./constants');
 
 var port = process.env.PORT || 1337;
 var app = express();
-var log = [];
+var log = {};
 
 // view engine setup
 app.set('views', __dirname + '/public/views');
@@ -20,7 +20,16 @@ app.use(cookieParser());
 
 app.use('/static', express.static('public'))
 
+// On Startup
+
 app.use((req, res, next) => {
+  if (!req.cookies.userId) {
+    const userId = getRandomId(6);
+    res.cookie('userId', userId, { maxAge: constants.MAX_COOKIE_AGE });
+    res.locals.userId = userId;
+  } else {
+    res.locals.userId = req.cookies.userId
+  }
   res.locals.constants = constants;
   next();
 });
@@ -28,12 +37,7 @@ app.use((req, res, next) => {
 // Dice Roller ---------------------------------------
 
 app.get('/', (req, res) => {
-  const charName = req.cookies.charName;
-  if (!charName) {
-    res.redirect('/login');
-  } else {
-    res.render('landingpage.pug', { charName });
-  }
+  res.redirect('/session/test');
 });
 
 // Charsheet -----------------------------------------
@@ -49,7 +53,13 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  res.cookie('charName', req.body.charName, {maxAge: 90 * 60 * 60 * 1000 * 24});
+  res.cookie('charName', req.body.charName, { maxAge: constants.MAX_COOKIE_AGE });
+  // Update the character name in any relevent sessions for this user.
+  for (const session of Object.values(log)) {
+    if (session[res.locals.userId]) {
+      session[res.locals.userId].sessionUser.charName = req.body.charName;
+    }
+  }
   res.redirect('/')
 });
 
@@ -69,18 +79,34 @@ app.get('/session/:sessionId', (req, res) => {
 });
 
 app.post('/session', (req, res) => {
-  const sessionId = Math.random().toString(36).replace(/[0o1li]/gi, '').slice(-4);
-  res.redirect('/session/' + sessionId);
+  res.redirect('/session/' + getRandomId(4));
 });
 
 // API -----------------------------------------------
 
 app.post('/api/log', (req, res) => {
-  log.unshift(req.body);
+  const sessionId = req.body.sessionUser.sessionId;
+  if (!log[sessionId]) {
+    log[sessionId] = {};
+  }
+  log[sessionId][req.body.sessionUser.userId] = req.body;
+  res.send(log[sessionId]);
 });
 
-app.get('/api/log', (req, res) => {
-  res.send(log);
+//app.post('/api/upsertSessionUser', (req, res) => {
+//  const sessionUser = req.body;
+//  if (!log[sessionUser.sessionId]) {
+//    log[sessionUser.sessionId] = {};
+//  }
+//  if (!log[sessionUser.sessionId][sessionUser.userId]) {
+//    log[sessionUser.sessionId][sessionUser.userId] = {};
+//  }
+//  log[sessionUser.sessionId][sessionUser.userId].sessionUser = sessionUser;
+//  res.send(log[sessionUser.sessionId]);
+//});
+
+app.get('/api/log/:sessionId', (req, res) => {
+  res.send(log[req.params.sessionId]);
 });
 
 // Server Startup ------------------------------------
@@ -88,3 +114,7 @@ app.get('/api/log', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 });
+
+function getRandomId(length) {
+  return Math.random().toString(36).replace(/[0o1li]/gi, '').slice(-length);
+}

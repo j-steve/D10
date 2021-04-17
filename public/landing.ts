@@ -6,21 +6,25 @@ const MINTUMBLETIMES = 15;
 const MAXTUMBLETIMES = 20;
 
 const diceInPlay: Dice[] = [];
+let sessionUser: SessionUser;
+let diceRoll: DiceRoll;
 
 function main() {
   const $diceRollArea = $('#dice-roll-area');
   $('#dice-count-form').on('submit', (e) => {
     $('.dice').remove(); // Remove any pre-existing dice on a new roll submission.
     diceInPlay.length = 0;
-    for (let i = 0; i < $('#dice-count').val(); i++) {
+    const totalDie = Array.from($('.roller-input input[type=number]')).map((x: HTMLInputElement) => +x.value).reduce((a, b) => a + b);
+    for (let i = 0; i < totalDie; i++) {
       diceInPlay.push(new Dice().appendTo($diceRollArea));
     }
-    Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(() => RaiseSetCalculator.calculateSets(false));
+    diceRoll = new DiceRoll($('#trait').val() as string, $('#skill').val() as string, totalDie);
+    Promise.allSettled(diceInPlay.map(dice => dice.roll())).then(RaiseSetCalculator.calculateSets);
     return false; // To prevent form submission and page reload.
   });
-
-  refreshLogMessages();
-  setInterval(refreshLogMessages, 5000);
+  sessionUser = new SessionUser($('#sessionId').val() as string, $('#userId').val() as string, $('#charName').val() as string);
+  sendLogUpdate();
+  setInterval(refreshLogMessages, 2500);
 }
 
 
@@ -37,8 +41,9 @@ class Dice {
     this.$diceValue = $('<span>').appendTo(this.$dice);
     this.tumblesRemaining = 0;
     this.$dice.on('click', () => {
+      diceRoll.rerolls += 1;
       diceInPlay.forEach(d => d.clearRaiseSet());
-      this.roll().then(() => RaiseSetCalculator.calculateSets(true));
+      this.roll().then(RaiseSetCalculator.calculateSets);
     });
   }
 
@@ -114,7 +119,7 @@ class Dice {
 
 class RaiseSetCalculator {
 
-  static calculateSets(reroll: boolean) {
+  static calculateSets() {
     let remainingDice = [...diceInPlay]; // Make a shallow copy of the list.
     let maxErrorThreshold = 0;
     let raiseCount = 0;
@@ -133,9 +138,9 @@ class RaiseSetCalculator {
     $('#leftover-dice-count').text(remainingDice.length.toString());
     $('#raises').show();
 
-    const logMessage = `rolled ${diceInPlay.length} die ${reroll ? '[rerolled 1]' : ''} | raises: ${ raiseCount } | leftover die: ${ remainingDice.length }`;
-    $.post('/api/log', { player: $('#player-name input').val(), message: logMessage, time: Date.now() });
-    refreshLogMessages();
+    diceRoll.raises = raiseCount;
+    diceRoll.leftoverDice = remainingDice.length;
+    sendLogUpdate();
   }
 
   private static findOneRaiseSet(remainingDice: Dice[], maxErrorThreshold: number) {
@@ -160,17 +165,47 @@ class RaiseSetCalculator {
   }
 }
 
-function refreshLogMessages() {
-  $.ajax({ type: 'GET', url: '/api/log' }).then((log) => {
-    const $log = $('#log').empty();
-    log.forEach(roll => {
-      const $msg = $('<div>').addClass('log').appendTo($log);
-      $('<span>').addClass('timestamp log-element').text(new Date(+roll.time).toLocaleTimeString()).appendTo($msg);
-      $('<span>').addClass('player log-element').text(roll.player).appendTo($msg);
-      $('<span>').addClass('message log-element').text(roll.message).appendTo($msg);
-    });
+class SessionUser {
+  constructor(public sessionId: string, public userId: string, public charName: string) {
+    console.log(sessionId, userId, charName);
+  }
+}
 
-  });
+class DiceRoll {
+  public raises = 0;
+  public leftoverDice = 0;
+  public rerolls = 0;
+  constructor(public trait: string, public skill: string, public diceCount: number) {}
+}
+
+class CharRow {
+  constructor(public sessionUser: SessionUser, public roll: DiceRoll) { }
+}
+
+function sendLogUpdate() {
+  $.post('/api/log', new CharRow(sessionUser, diceRoll)).then(processApiResponse);
+}
+
+function refreshLogMessages() {
+  return $.ajax({ type: 'GET', url: '/api/log/' + sessionUser.sessionId }).then(processApiResponse);
+}
+
+function processApiResponse(log: {}): CharRow[] {
+  const $charRowsTable = $('#char-rows');
+  $charRowsTable.find('.char-row').remove() // Delete existing rows to repopualte the table.
+  const charRows: CharRow[] = Object.values(log);
+  charRows.sort((a, b) => a.roll && b.roll && compareNumbers(a.roll.raises, b.roll.raises) || a.sessionUser.charName.localeCompare(b.sessionUser.charName));
+  charRows.forEach((charRow: CharRow) => {
+    const $row = $('<tr>').addClass('char-row').appendTo($charRowsTable);
+    $('<td>').text(charRow.sessionUser.charName).appendTo($row);
+    if (charRow.roll) {
+      const diceBreakdown = `rolled ${charRow.roll.diceCount}, rerolled ${charRow.roll.rerolls}, had ${charRow.roll.leftoverDice} unused dice`;
+      $('<td>').text(charRow.roll.trait + ' + ' + charRow.roll.skill).prop('title', diceBreakdown).appendTo($row);
+      $('<td>').addClass('numeric').text(charRow.roll.raises).appendTo($row);
+      $('<td>').addClass('numeric').text(charRow.roll.leftoverDice).appendTo($row);
+    }
+  })
+  return charRows;
 }
 
 /**
@@ -178,6 +213,10 @@ function refreshLogMessages() {
  */
 function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max + 1 - min) + min)
+}
+
+function compareNumbers(a: number, b: number): number {
+  return a > b ? 1 : a === b ? 0 : -1;
 }
 
 main();
