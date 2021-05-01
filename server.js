@@ -18,7 +18,13 @@ app.use(express.urlencoded());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/static', express.static('public'))
+
+app.use(express.static('./client/dist/d10'));
+
+app.get('/*', function(req, res) {
+  res.sendFile('index.html', {root: 'client/dist/d10/'});
+});
+
 
 // On Startup
 
