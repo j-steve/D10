@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc | npm build --prefix ./client",
-	"heroku-postbuild": "ng build --prod  --prefix ./client"
+	"heroku-postbuild": "ng build --prod  --prefix ./client",
     "start": "npm run build && node server.js | npm start --prefix ./client"
   },
   "author": {
