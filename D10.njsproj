@@ -89,6 +89,7 @@
     <Folder Include="client\src\" />
     <Folder Include="client\src\app\" />
     <Folder Include="client\src\app\dice-roller\" />
+    <Folder Include="client\src\app\shared\" />
     <Folder Include="client\src\assets\" />
     <Folder Include="client\src\environments\" />
     <Folder Include="public\views\" />
@@ -106,6 +107,7 @@
     <TypeScriptCompile Include="client\src\app\dice-roller\dice-roller.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="client\src\app\shared\game.constants.ts" />
     <TypeScriptCompile Include="client\src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="client\src\environments\environment.ts" />
     <TypeScriptCompile Include="client\src\main.ts" />
