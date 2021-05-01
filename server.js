@@ -19,10 +19,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use(express.static('./client/dist/d10'));
+app.use(express.static('./client/dist/d10client'));
 
 app.get('/*', function(req, res) {
-  res.sendFile('index.html', {root: 'client/dist/d10/'});
+  res.sendFile('index.html', { root: 'client/dist/d10client/'});
 });
 
 
