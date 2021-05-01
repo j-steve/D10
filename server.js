@@ -9,9 +9,9 @@ var port = process.env.PORT || 1337;
 var app = express();
 var log = {};
 
-app.use(express.urlencoded());
-app.use(express.json());
-app.use(cookieParser());
+//app.use(express.urlencoded());
+//app.use(express.json());
+//app.use(cookieParser());
 
 
 app.use(express.static('./client/dist/d10client'));
