@@ -4,6 +4,8 @@
   "description": "D10",
   "main": "server.js",
   "scripts": {
+    "preinstall": "cd client && npm link @angular/cli ",
+    "heroku-postbuild": "cd client && ng build --prod",
     "build": "tsc | npm build --prefix ./client",
 	"heroku-postbuild": "npm build --prefix ./client",
     "start": "npm run build && node server.js | npm start --prefix ./client"
