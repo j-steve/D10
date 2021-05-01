@@ -1,28 +1,23 @@
 'use strict';
-var http = require('http');
-var express = require('express');
-const cookieParser = require("cookie-parser");
+//Install express server
+const express = require('express');
+const path = require('path');
 
-var constants = require('./constants');
+const app = express();
 
-var port = process.env.PORT || 1337;
-var app = express();
-var log = {};
+// Serve only the static files form the dist directory
+app.use(express.static(__dirname + '/client/dist/d10client'));
 
-//app.use(express.urlencoded());
-//app.use(express.json());
-//app.use(cookieParser());
+app.get('/*', function (req, res) {
 
-
-app.use(express.static('./client/dist/d10client'));
-
-app.get('/*', function(req, res) {
-  res.sendFile('index.html', { root: 'client/dist/d10client/'});
+  res.sendFile(path.join(__dirname + '/client/dist/d10client/index.html'));
 });
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8080);
 
+
+//var log = {};
 
 //// On Startup
 
