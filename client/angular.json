@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "d10": {
+    "d10client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/d10",
+            "outputPath": "dist/d10client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -71,18 +71,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "d10:build"
+            "browserTarget": "d10client:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "d10:build:production"
+              "browserTarget": "d10client:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "d10:build"
+            "browserTarget": "d10client:build"
           }
         },
         "test": {
@@ -119,16 +119,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "d10:serve"
+            "devServerTarget": "d10client:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "d10:serve:production"
+              "devServerTarget": "d10client:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "d10"
+  "defaultProject": "d10client"
 }

@@ -4,10 +4,10 @@
   "description": "D10",
   "main": "server.js",
   "scripts": {
-    "preinstall": "cd client && npm link @angular/cli ",
-    "build": "tsc",
-    "heroku-postbuild": "cd client && npm install",
-    "start": "npm run build && node server.js"
+    "preinstall": "cd client && npm link @angular/cli",
+    "build": "tsc & cd client && npm run build",
+    "start": "npm run build && node server.js",
+    "heroku-postbuild": "cd client && npm install"
   },
   "author": {
     "name": ""
