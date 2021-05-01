@@ -32,6 +32,18 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="client\src\app\app.component.html" />
+    <Content Include="client\src\app\app.component.scss" />
+    <Content Include="client\src\app\dice-roller\dice-roller.component.html" />
+    <Content Include="client\src\app\dice-roller\dice-roller.component.scss" />
+    <Content Include="client\src\app\dice-roller\dice.component.scss" />
+    <Content Include="client\src\app\dice-roller\dice.component.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="client\src\assets\.gitkeep" />
+    <Content Include="client\src\favicon.ico" />
+    <Content Include="client\src\index.html" />
+    <Content Include="client\src\styles.scss" />
     <Content Include="constants.js">
       <SubType>Code</SubType>
     </Content>
@@ -73,10 +85,32 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="client\" />
+    <Folder Include="client\src\" />
+    <Folder Include="client\src\app\" />
+    <Folder Include="client\src\app\dice-roller\" />
+    <Folder Include="client\src\assets\" />
+    <Folder Include="client\src\environments\" />
     <Folder Include="public\views\" />
     <Folder Include="public\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="client\src\app\app.component.spec.ts" />
+    <TypeScriptCompile Include="client\src\app\app.component.ts" />
+    <TypeScriptCompile Include="client\src\app\app.module.ts" />
+    <TypeScriptCompile Include="client\src\app\dice-roller\dice-roller.component.ts" />
+    <TypeScriptCompile Include="client\src\app\dice-roller\dice.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\src\app\dice-roller\dice-roller.module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="client\src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="client\src\environments\environment.ts" />
+    <TypeScriptCompile Include="client\src\main.ts" />
+    <TypeScriptCompile Include="client\src\polyfills.ts" />
+    <TypeScriptCompile Include="client\src\test.ts" />
     <TypeScriptCompile Include="public\charsheet.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
