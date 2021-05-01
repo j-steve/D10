@@ -4,7 +4,7 @@
   "description": "D10",
   "main": "server.js",
   "scripts": {
-    "preinstall": "cd client && npm link @angular/cli",
+    "preinstall": "cd client && npm link @angular/cli@~11.2.3",
     "build": "tsc & cd client && npm run build",
     "start": "npm run build && node server.js",
     "heroku-postbuild": "cd client && npm install"
@@ -22,9 +22,5 @@
     "sass": "^1.32.8",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
-  },
-  "engines": {
-    "node": "7.8.0",
-    "npm": "4.6.1"
   }
 }
