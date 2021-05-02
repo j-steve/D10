@@ -9,7 +9,7 @@
       <mat-option *ngFor="let trait of TRAITS" [value]="trait">
         <mat-icon> {{trait.icon}} </mat-icon>
         {{trait.name}}
-        <span style="font-size:9px; color: gray;">{{trait.description}}</span>
+        <span class="secondary-text">{{trait.description}}</span>
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -23,7 +23,7 @@
       <mat-option *ngFor="let skill of SKILLS" [value]="skill">
         <mat-icon> {{skill.icon}} </mat-icon>
         {{skill.name}}
-        <span style="font-size:9px; color: gray;">{{skill.description}}</span>
+        <span class="secondary-text">{{skill.description}}</span>
       </mat-option>
     </mat-select>
   </mat-form-field>
