@@ -1,5 +1,6 @@
 <div>
-  <d10-preroll-form></d10-preroll-form>
+  <d10-preroll-form (rolled)="onNewRoll($event)"></d10-preroll-form>
   <div class="dice-roll-area">
+    <d10-die *ngFor="let die of dice"></d10-die>
   </div>
 </div>

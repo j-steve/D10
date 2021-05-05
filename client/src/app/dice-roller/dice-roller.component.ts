@@ -7,6 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiceRollerComponent implements OnInit {
 
+  dice: number[] = [];
+
   ngOnInit(): void {
+  }
+
+  onNewRoll(diceCount: number): void {
+    console.log('new roll!', diceCount);
+    this.dice.length = 0;
+    for (let i = 0; i < diceCount; i++) {
+      this.dice.push(i);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 import { GameConstants, NamedItem } from '../../shared/game.constants';
@@ -11,6 +11,8 @@ import { GameConstants, NamedItem } from '../../shared/game.constants';
 export class PrerollFormComponent implements OnInit {
   TRAITS = GameConstants.TRAITS;
   SKILLS = GameConstants.SKILLS;
+
+  @Output() rolled = new EventEmitter<number>();
 
   selectedTrait: NamedItem | null = null;
   selectedSkill: NamedItem | null = null;
@@ -29,5 +31,6 @@ export class PrerollFormComponent implements OnInit {
   onRoll(): void {
     console.log('submitted!');
     event?.stopPropagation();
+    this.rolled.emit(this.rollForm.get('diceCount')?.value);
   }
 }
