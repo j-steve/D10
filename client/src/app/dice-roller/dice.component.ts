@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'dice',
+  selector: 'd10-dice',
   templateUrl: './dice.component.html',
   styleUrls: ['./dice.component.scss']
 })

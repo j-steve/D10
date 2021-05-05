@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameConstants, NamedItem } from '../shared/game.constants';
 
 @Component({
-  selector: 'dice-roller',
+  selector: 'd10-dice-roller',
   templateUrl: './dice-roller.component.html',
   styleUrls: ['./dice-roller.component.scss']
 })

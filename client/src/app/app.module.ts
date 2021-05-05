@@ -6,10 +6,12 @@ import { DiceRollerModule } from './dice-roller/dice-roller.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { GameStatusComponent } from './game-status/game-status.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GameStatusComponent
   ],
   imports: [
     BrowserModule,
