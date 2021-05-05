@@ -4,13 +4,29 @@ mat-select-trigger mat-icon {
   font-size: 16px;
 }
 
-mat-option mat-icon {
-  margin-left: 0px;
-  margin-right: -3px;
-  font-size: 20px;
-}
+mat-option {
+  mat-icon {
+    margin-left: 0px;
+    margin-right: -3px;
+    font-size: 20px;
+  }
 
-mat-option .secondary-text {
-  font-size:9px;
-  color: gray;
+  mat-option .secondary-text {
+    color: gray;
+  }
+
+  &.skill-field-option {
+    height: 6em !important;
+
+    .secondary-text {
+      font-size: 10px;
+      line-height: 10px;
+      display: block;
+      width: 15rem;
+      height: 3rem;
+      white-space: normal;
+      margin-top: -0.5rem;
+      margin-right: -2rem;
+    }
+  }
 }

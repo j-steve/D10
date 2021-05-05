@@ -20,7 +20,7 @@
         <mat-icon> {{selectedSkill?.icon}} </mat-icon>
         {{selectedSkill?.name}}
       </mat-select-trigger>
-      <mat-option *ngFor="let skill of SKILLS" [value]="skill">
+      <mat-option *ngFor="let skill of SKILLS" [value]="skill" class="skill-field-option">
         <mat-icon> {{skill.icon}} </mat-icon>
         {{skill.name}}
         <span class="secondary-text">{{skill.description}}</span>
