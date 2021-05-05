@@ -11,15 +11,15 @@ mat-option {
     font-size: 20px;
   }
 
-  mat-option .secondary-text {
+  .secondary-text {
     color: gray;
+    font-size: 10px;
   }
 
   &.skill-field-option {
     height: 6em !important;
 
     .secondary-text {
-      font-size: 10px;
       line-height: 10px;
       display: block;
       width: 15rem;
