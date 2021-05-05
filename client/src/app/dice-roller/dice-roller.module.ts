@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 
 import { DiceComponent } from './dice.component';
 import { DiceRollerComponent } from './dice-roller.component';
+import { PrerollFormComponent } from './preroll-form/preroll-form.component';
+import { DieComponent } from './die/die.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { DiceRollerComponent } from './dice-roller.component';
   ],
   declarations: [
     DiceComponent,
-    DiceRollerComponent
+    DiceRollerComponent,
+    PrerollFormComponent,
+    DieComponent
   ],
   exports: [
     DiceRollerComponent

@@ -36,10 +36,10 @@
     <Content Include="client\src\app\app.component.scss" />
     <Content Include="client\src\app\dice-roller\dice-roller.component.html" />
     <Content Include="client\src\app\dice-roller\dice-roller.component.scss" />
-    <Content Include="client\src\app\dice-roller\dice.component.scss" />
-    <Content Include="client\src\app\dice-roller\dice.component.html">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="client\src\app\dice-roller\die\die.component.html" />
+    <Content Include="client\src\app\dice-roller\die\die.component.scss" />
+    <Content Include="client\src\app\dice-roller\preroll-form\preroll-form.component.html" />
+    <Content Include="client\src\app\dice-roller\preroll-form\preroll-form.component.scss" />
     <Content Include="client\src\app\game-status\game-status.component.html" />
     <Content Include="client\src\app\game-status\game-status.component.scss" />
     <Content Include="client\src\assets\.gitkeep" />
@@ -91,6 +91,8 @@
     <Folder Include="client\src\" />
     <Folder Include="client\src\app\" />
     <Folder Include="client\src\app\dice-roller\" />
+    <Folder Include="client\src\app\dice-roller\die\" />
+    <Folder Include="client\src\app\dice-roller\preroll-form\" />
     <Folder Include="client\src\app\game-status\" />
     <Folder Include="client\src\app\shared\" />
     <Folder Include="client\src\assets\" />
@@ -104,12 +106,13 @@
     <TypeScriptCompile Include="client\src\app\app.component.ts" />
     <TypeScriptCompile Include="client\src\app\app.module.ts" />
     <TypeScriptCompile Include="client\src\app\dice-roller\dice-roller.component.ts" />
-    <TypeScriptCompile Include="client\src\app\dice-roller\dice.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="client\src\app\dice-roller\dice-roller.module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="client\src\app\dice-roller\die\die.component.spec.ts" />
+    <TypeScriptCompile Include="client\src\app\dice-roller\die\die.component.ts" />
+    <TypeScriptCompile Include="client\src\app\dice-roller\preroll-form\preroll-form.component.spec.ts" />
+    <TypeScriptCompile Include="client\src\app\dice-roller\preroll-form\preroll-form.component.ts" />
     <TypeScriptCompile Include="client\src\app\game-status\game-status.component.spec.ts" />
     <TypeScriptCompile Include="client\src\app\game-status\game-status.component.ts" />
     <TypeScriptCompile Include="client\src\app\shared\game.constants.ts" />
