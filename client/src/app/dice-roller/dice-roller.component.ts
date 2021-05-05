@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 import { GameConstants, NamedItem } from '../shared/game.constants';
 
@@ -14,6 +15,19 @@ export class DiceRollerComponent implements OnInit {
   selectedTrait: NamedItem | null = null;
   selectedSkill: NamedItem | null = null;
 
+  rollForm = this.formBuilder.group({
+    trait: '',
+    skill: '',
+    diceCount: ''
+  });
+
+  constructor(private formBuilder: FormBuilder) {}
+
   ngOnInit() {
+  }
+
+  onRoll(): void {
+    console.log('submitted!');
+    event?.stopPropagation();
   }
 }

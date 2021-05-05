@@ -1,32 +1,39 @@
 <div>
-  <mat-form-field>
-    <mat-label>Trait</mat-label>
-    <mat-select [(value)]="selectedTrait">
-      <mat-select-trigger>
-        <mat-icon> {{selectedTrait?.icon}} </mat-icon>
-        {{selectedTrait?.name}}
-      </mat-select-trigger>
-      <mat-option *ngFor="let trait of TRAITS" [value]="trait">
-        <mat-icon> {{trait.icon}} </mat-icon>
-        {{trait.name}}
-        <span class="secondary-text">{{trait.description}}</span>
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Skill</mat-label>
-    <mat-select [(value)]="selectedSkill">
-      <mat-select-trigger>
-        <mat-icon> {{selectedSkill?.icon}} </mat-icon>
-        {{selectedSkill?.name}}
-      </mat-select-trigger>
-      <mat-option *ngFor="let skill of SKILLS" [value]="skill" class="skill-field-option">
-        <mat-icon> {{skill.icon}} </mat-icon>
-        {{skill.name}}
-        <span class="secondary-text">{{skill.description}}</span>
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <form [formGroup]="rollForm" (ngSubmit)="onRoll()">
+    <mat-form-field appearance="outline">
+      <mat-label>Trait</mat-label>
+      <mat-select formControlName="trait" [(value)]="selectedTrait" required>
+        <mat-select-trigger>
+          <mat-icon> {{selectedTrait?.icon}} </mat-icon>
+          {{selectedTrait?.name}}
+        </mat-select-trigger>
+        <mat-option *ngFor="let trait of TRAITS" [value]="trait">
+          <mat-icon> {{trait.icon}} </mat-icon>
+          {{trait.name}}
+          <span class="secondary-text">{{trait.description}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Skill</mat-label>
+      <mat-select formControlName="skill" [(value)]="selectedSkill" required>
+        <mat-select-trigger>
+          <mat-icon> {{selectedSkill?.icon}} </mat-icon>
+          {{selectedSkill?.name}}
+        </mat-select-trigger>
+        <mat-option *ngFor="let skill of SKILLS" [value]="skill" class="skill-field-option">
+          <mat-icon> {{skill.icon}} </mat-icon>
+          {{skill.name}}
+          <span class="secondary-text">{{skill.description}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label># Dice</mat-label>
+      <input matInput formControlName="diceCount" type="number" min="0" max="99" required />
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit"  [disabled]="!rollForm.valid">Roll!</button>
+  </form>
   <div class="dice-roll-area">
   </div>
 </div>
