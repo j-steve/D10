@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { DiceComponent } from './dice.component';
 import { DiceRollerComponent } from './dice-roller.component';
 import { PrerollFormComponent } from './preroll-form/preroll-form.component';
 import { DieComponent } from './die/die.component';
@@ -25,7 +24,6 @@ import { DieComponent } from './die/die.component';
     MatInputModule
   ],
   declarations: [
-    DiceComponent,
     DiceRollerComponent,
     PrerollFormComponent,
     DieComponent
