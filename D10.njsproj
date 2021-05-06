@@ -116,6 +116,9 @@
     <TypeScriptCompile Include="client\src\app\game-status\game-status.component.spec.ts" />
     <TypeScriptCompile Include="client\src\app\game-status\game-status.component.ts" />
     <TypeScriptCompile Include="client\src\app\shared\game.constants.ts" />
+    <TypeScriptCompile Include="client\src\app\shared\util.constants.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="client\src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="client\src\environments\environment.ts" />
     <TypeScriptCompile Include="client\src\main.ts" />
